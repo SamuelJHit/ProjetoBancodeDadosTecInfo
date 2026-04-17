@@ -125,3 +125,10 @@ where especialidade = 'Crossfit' or data_contratacao >= '2026-01-01';
 
 select * from exercicios
 where equipamento != 'Máquina';
+
+select * from alunos
+where email is not null;
+
+select * from planos;
+
+update PLANOS set NOME = 'Plano Trimestral Bronze'
