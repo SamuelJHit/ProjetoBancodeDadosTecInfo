@@ -132,3 +132,30 @@ where email is not null;
 select * from planos;
 
 update PLANOS set NOME = 'Plano Trimestral Bronze'
+
+
+Atividade para quinta-feira:
+1)  insert into plano_kid (valor_mensal, duracao_meses) values
+('Plano Kids', 70.00, 1);
+
+2)  create table cadeira extensora (
+	id INT auto_increment primary key,
+	nome_exercicio varchar (50) not null,
+	equipamento varchar (50)
+);
+
+3)  create table planos (
+	id INT auto_increment primary key,
+	valor_mensal decimal (10,2) not null,
+	nome varchar (50) not null,
+);
+
+4)  create table instrutor (
+	id INT auto increment primary key,
+	nome varchar(100) not null,
+	especialidade varchar (50),
+);
+
+5  create table alunos (
+	
+
