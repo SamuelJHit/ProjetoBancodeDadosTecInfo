@@ -206,7 +206,7 @@ set valor_mensal = valor_mensal * 1.05;
 set especialdiade = 'Treinamento Funcional'
 );
 
-5-1) select * from alunos
+5-1) select * from alunos where email is null;
 
 6-1)
 select * from exercicios
@@ -241,3 +241,16 @@ where id_aluno = 10.
 14-1) select * from instrutores where especialidade != 'Yoga';
 
 15-1) select from alunos where peso = 500.00 or peso = 1200.00;
+
+-- Se o campo de e-mail ainda não foi preenchido, normalmente ele está como NULL no banco.
+16-1) select * from alunos where email is null;
+
+17-1) select * from treinos where data_criacao = 01/01/2026;
+insert into treinos (data_criacao) values (01/01/2026);
+--ordem crescente use o order, caso for referir, use by
+-- lembrasse que o where filtra e order by organiza.
+18-1) select * from planos order by valor_mensal;
+
+19-1) select * from alunos order by nome asc;
+-- Case selecionasse mais nomes, não precisa repetir o nome =, e sim usar o in de forma direta.
+20-1) select * from exercicios where nome in ('Barra', Anilha, Kettlebell');
