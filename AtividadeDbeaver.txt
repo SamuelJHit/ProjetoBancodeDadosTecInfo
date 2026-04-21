@@ -216,4 +216,14 @@ update exercicios
 set nome_exercicio = 'Condicionamento Fisico'
 where nome_exercicio = 'Condicionamento';
 
-7-1)
+7-1) insert into alunos (peso) values
+(20.00);
+--Não há o nome Anilha como exericicio de casa pedem.
+8-1)  delete from exercicios where status = 'cancelado';
+
+9-1)  insert into planos (nome) values ('Plano de teste');
+
+delete from planos
+where nome = 'Plano de teste';
+
+10-1) 
