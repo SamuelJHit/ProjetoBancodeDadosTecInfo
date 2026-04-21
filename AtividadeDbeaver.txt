@@ -226,4 +226,18 @@ where nome_exercicio = 'Condicionamento';
 delete from planos
 where nome = 'Plano de teste';
 
-10-1) 
+10-1) insert into instrutores (data_contratacao) values (2020);
+
+delete from instrutores where data_contratacao = 2020; 
+
+11-1) select from alunos
+where id_aluno = 10.
+
+12-1) select * from exercicios where equipamento != 'Máquina'; 
+
+13-1) select * from planos where valor_mensal = 100.00 and 200.00.
+
+-- Liste todos os instrutores que não têm a especialidade 'Yoga'.
+14-1) select * from instrutores where especialidade != 'Yoga';
+
+15-1) select from alunos where peso = 500.00 or peso = 1200.00;
