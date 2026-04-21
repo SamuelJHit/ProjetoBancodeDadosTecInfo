@@ -135,27 +135,85 @@ update PLANOS set NOME = 'Plano Trimestral Bronze'
 
 
 Atividade para quinta-feira:
-1)  insert into plano_kid (valor_mensal, duracao_meses) values
-('Plano Kids', 70.00, 1);
 
-2)  create table cadeira extensora (
+1) create table planos (
+	id INT auto incrrement primary key,
+	nome varchar(50) not null,
+	valor_mensal decimal (10,2) not null,
+	duracao_meses tinyint not null
+);
+
+2) create table alunos(
 	id INT auto_increment primary key,
-	nome_exercicio varchar (50) not null,
+	nome VARCHAR(100) not null,
+	cpf char(11) unique not null,
+	data nascimento DATE,
+	email varchar(100),
+	peso decimal(5,2),
+	altura decimal(3,2)
+	id_plano INT,
+	constraint fk_aluno_plano foreing key (id_plano) references planos(id)
+);
+
+3) create table instrutores (
+	id INT auto_increment primary key,
+	nome VARCHAR(100) not null,
+	especialidade varchar(50),
+	data_contratacao DATE
+);
+
+4) create table treinos(
+	id INT auto_increment primary key,
+	id_aluno int not null,
+	id_instrutor int not null,
+	data_criacao date not null,
+	objetivo varchar(100),
+	constraint fk_treino_aluno foreign key(id_aluno)
+	references alunos(id),
+	constraint fk_treino_instrutor foreign key(id_instrutor)
+	references instrutores(id)
+);
+
+5) create table exercicios (
+	id INT auto_increment primary key,
+	nome_exercicio varchar(50) not null,
 	equipamento varchar (50)
 );
 
-3)  create table planos (
-	id INT auto_increment primary key,
-	valor_mensal decimal (10,2) not null,
-	nome varchar (50) not null,
+6) create table itens_treino(
+	id_treino int,
+	id_exercicio int,
+	series tinyint,
+	repeticoes tinyint,
+	primary key (id_treino, id_exercicio),
+	constraint fk_item_treino foreign key(id_treino)
+	references treinos(id),
+	constraint fk_item_exercicio foreign key(id_exercicio)
+	references exercicios(id)
 );
 
-4)  create table instrutor (
-	id INT auto increment primary key,
-	nome varchar(100) not null,
-	especialidade varchar (50),
+1-1)  insert into plano_kid (nome, valor_mensal, duracao_meses) values
+('Plano Kids', 70.00, 1);
+
+2-1)  insert into exercicios (nome_exercicio, equipamento) VALUES
+('Cadeira Extensora', 'Máquina'),
 );
 
-5  create table alunos (
-	
+3-1)  update planos 
+set valor_mensal = valor_mensal * 1.05;
 
+4-1)  update instrutores
+set especialdiade = 'Treinamento Funcional'
+);
+
+5-1) select * from alunos
+
+6-1)
+select * from exercicios
+where nome_exercicio = 'Condicionamento';
+
+update exercicios
+set nome_exercicio = 'Condicionamento Fisico'
+where nome_exercicio = 'Condicionamento';
+
+7-1)
