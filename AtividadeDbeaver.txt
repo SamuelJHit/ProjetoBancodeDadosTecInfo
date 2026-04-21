@@ -254,3 +254,23 @@ insert into treinos (data_criacao) values (01/01/2026);
 19-1) select * from alunos order by nome asc;
 -- Case selecionasse mais nomes, não precisa repetir o nome =, e sim usar o in de forma direta.
 20-1) select * from exercicios where nome in ('Barra', Anilha, Kettlebell');
+
+-- o between é entre dois valores
+21-1) select * from instrutores between date_contratado = ('01/01/2025' and '31/12/2025')
+
+22-1) select * from alunos where id;
+udate alunos set id = '12345678901'
+where id = '318571635'
+
+23-1) select * from alunos where id = 15;
+
+update alunos 
+set peso = 78.50 and altura = 1.82
+where id = 15;
+
+24-1) insert into exercicios (equipamento) values ('Haltere')
+update exercicios set equipamento = Halter
+where equipamento = Haltere;
+
+25-1) insert into exercicios (nome_exercicio) values ('Agachamento Livre')
+insert into exercicios (equipamento) values ('Barra')
