@@ -149,7 +149,11 @@ select
 	p.nome as 'Nome do Plano' from alunos as a inner join Planos as p on a.id_plano = p.id;
 
 select 
-	a.instrutor
+	a.instrutor //Vou testar ainda
+
+select * from exercicios where equipamentos;
+
+select * from instrutores
 
 
 
