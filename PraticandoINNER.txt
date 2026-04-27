@@ -153,7 +153,19 @@ select
 
 select * from exercicios where equipamentos;
 
-select * from instrutores
+select * from instrutores;
 
+update instrutores set nome = Professor;
 
+alter table instrutores rename to Professor;
+
+alter table instrutores rename column nome to Professor; // renomeia a coluna.
+
+alter table alunos rename column peso to Peso_Maximo;
+
+select * from planos 
+order by valor_mensal dasc;
+
+select * from alunos
+order by data_nascimento asc;
 
