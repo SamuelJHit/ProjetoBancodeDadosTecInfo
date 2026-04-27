@@ -151,11 +151,11 @@ select
 select 
 	a.instrutor //Vou testar ainda
 
-select * from exercicios where equipamentos;
+select e.nome as exercicios, e.nome as equipamento from nome_exercicios as a left join itens_treinos as p on a.id_exercicios = p.id_treino;
 
 select * from instrutores;
 
-update instrutores set nome = Professor;
+update instrutores set nome = Professor where nome;
 
 alter table instrutores rename to Professor;
 
@@ -168,4 +168,28 @@ order by valor_mensal dasc;
 
 select * from alunos
 order by data_nascimento asc;
+
+select alunos as "nome_do_aluno", cpf as "Documento" and "Cliente" from alunos;
+
+7)
+
+select * from treinos;
+
+select DISTINCT nome_equipamento from exercicios;
+
+10)
+
+select n.alunos as aluno p.nome as planos from alunos;
+
+select n.alunos as aluno, p.nome as plano from alunos as a left join planos as p on a.id_plano = p.id_plano;
+
+select n.instrutor, o.treino as itens_treino from exercicios;
+
+select n.alunos as alunos p.treino as a inner join itens_treinos as p on a.id_treino = p.objetivo;
+
+select n.exercicos as itens_treino as a inner join treino as p on a.id 2 = itens_treino;
+
+select n.alunos as data_criacao as a inner join treino as p on a.id_treino = p.treino;
+
+
 
