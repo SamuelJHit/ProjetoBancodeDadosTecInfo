@@ -191,5 +191,7 @@ select n.exercicos as itens_treino as a inner join treino as p on a.id 2 = itens
 
 select n.alunos as data_criacao as a inner join treino as p on a.id_treino = p.treino;
 
+select n.aluno as valor_mensal as a inner join exercicio as p on a.id_treino = p.treino;
+
 
 
