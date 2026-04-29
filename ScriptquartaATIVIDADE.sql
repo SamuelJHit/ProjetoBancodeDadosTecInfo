@@ -242,5 +242,9 @@ from planos.p order by valor_mensal asc;
 
 -- Tarefa2: instrutores
 select * from instrutor order by id_instrutor asc;
-
+-- aqui removendo o instrutor daquela categoria treinos
 delete from treinos where id_instrutor = (select id from id_instrutor where id = 1);
+-- e aqui atualizando e buscando o instrutor mais recente.
+update treinos set id_instrutor = (select * from instrutores order by id_instrutor desc);
+-- fazer limpeza (descubra na lourdina)
+select * from id_plano;
