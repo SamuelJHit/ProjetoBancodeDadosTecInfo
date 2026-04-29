@@ -210,7 +210,21 @@ inner join treinos t on a.id = t.id_aluno
 inner join itens_treino it on t.id = it.id_treino 
 inner join exercicios e on it.id_exercicio = e.id;
 
+-- exemplo sobre resumo planos
+create table resumo_planos as 
+select p.nome, count (a.id) as total_alunos
+from planos p
+left join alunos a on p.id = a.id_plano
+group by p.nome;
+
+-- criação dinamica
+insert into planos (nome, valor_mensal, duracao_meses)
+select 'Planos VIP Gold', max(valor_mensal) * 1.5, 12
+from planos;
+
+
 select nome, peso from alunos
 where peso > (select AVG(peso) from alunos);
 
 select * from alunos;
+
