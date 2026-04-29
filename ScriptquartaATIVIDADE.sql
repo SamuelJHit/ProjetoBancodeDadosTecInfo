@@ -222,6 +222,14 @@ insert into planos (nome, valor_mensal, duracao_meses)
 select 'Planos VIP Gold', max(valor_mensal) * 1.5, 12
 from planos;
 
+--update com subqueries
+update alunos set peso = peso - 1
+where id_plano = (select id_plano from planos
+where nome = 'Plano Anual Black');
+-- delete com subqueries
+delete from treinos
+where id_instrutor = (select id from instrutores where nome = 'Marcos Iron');
+
 
 select nome, peso from alunos
 where peso > (select AVG(peso) from alunos);
