@@ -237,14 +237,17 @@ where peso > (select AVG(peso) from alunos);
 select * from alunos;
 
 -- Tarefa1: Auditoria
-create table auditoria_precos as select p.nome, max(valor_mensal) * 12 
-from planos.p order by valor_mensal asc;
+create table auditoria_precos as select nome,(select max(valor_mensal) from planos) - valor_mensal as diferenca_plano from planos; 
 
 -- Tarefa2: instrutores
-select * from instrutor order by id_instrutor asc;
--- aqui removendo o instrutor daquela categoria treinos
-delete from treinos where id_instrutor = (select id from id_instrutor where id = 1);
+select * from instrutores order by id desc;
 -- e aqui atualizando e buscando o instrutor mais recente.
-update treinos set id_instrutor = (select * from instrutores order by id_instrutor desc);
--- fazer limpeza (descubra na lourdina)
-select * from id_plano;
+update treinos set id_instrutor = (select max(id) from instrutores) where id_instrutor = 3;
+-- aqui removendo o instrutor daquela categoria treinos
+delete from instrutores where id = 1;
+
+
+-- Tarefa3: limpeza
+select id from planos where valor_mensal < 50 ;
+
+delete from alunos where id_plano in (select id from planos where valor_mensal < 50);
