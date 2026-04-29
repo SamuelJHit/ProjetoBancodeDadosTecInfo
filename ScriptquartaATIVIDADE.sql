@@ -151,6 +151,26 @@ select
 select 
 	a.instrutor
 
+	select * from exercicios where equipamentos;
+
+select * from instrutores;
+
+update instrutores set nome = Professor;
+
+alter table instrutores rename to Professor;
+
+alter table instrutores rename column nome to Professor; // renomeia a coluna.
+
+alter table alunos rename column peso to Peso_Maximo;
+
+select * from planos 
+order by valor_mensal dasc;
+
+select * from alunos
+order by data_nascimento asc;
+
+alter table alunos rename column CPFs to Cliente and Documento;
+
 select * from exercicios where equipamento;
 
 select * from instrutores;
@@ -169,13 +189,9 @@ order by data_nascimento asc;
 
 select alunos as "nome_do_aluno", cpf as "Documento" and "Cliente" from alunos;
 
-7)
-
 select * from treinos;
 
 select DISTINCT nome_equipamento from exercicios;
-
-10)
 
 select n.alunos as aluno p.nome as planos from alunos;
 
@@ -188,9 +204,6 @@ select n.alunos as alunos ,p.treino as a inner join itens_treinos as p on a.id_t
 select n.exercicos as itens_treino as a inner join treino as p on a.id 2 = itens_treino;
 
 select n.alunos as data_criacao as a inner join treino as p on a.id_treino = p.treino;
-
-
-19)
 
 select a.nome, e.nome_exercicios, it.repeticoes, e.equipamento from alunos a 
 inner join treinos t on a.id = t.id_aluno
