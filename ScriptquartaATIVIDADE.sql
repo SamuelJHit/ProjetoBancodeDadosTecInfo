@@ -151,6 +151,26 @@ select
 select 
 	a.instrutor
 
+	select * from exercicios where equipamentos;
+
+select * from instrutores;
+
+update instrutores set nome = Professor;
+
+alter table instrutores rename to Professor;
+
+alter table instrutores rename column nome to Professor; // renomeia a coluna.
+
+alter table alunos rename column peso to Peso_Maximo;
+
+select * from planos 
+order by valor_mensal dasc;
+
+select * from alunos
+order by data_nascimento asc;
+
+alter table alunos rename column CPFs to Cliente and Documento;
+
 select * from exercicios where equipamento;
 
 select * from instrutores;
@@ -169,13 +189,9 @@ order by data_nascimento asc;
 
 select alunos as "nome_do_aluno", cpf as "Documento" and "Cliente" from alunos;
 
-7)
-
 select * from treinos;
 
 select DISTINCT nome_equipamento from exercicios;
-
-10)
 
 select n.alunos as aluno p.nome as planos from alunos;
 
@@ -189,15 +205,46 @@ select n.exercicos as itens_treino as a inner join treino as p on a.id 2 = itens
 
 select n.alunos as data_criacao as a inner join treino as p on a.id_treino = p.treino;
 
-
-19)
-
 select a.nome, e.nome_exercicios, it.repeticoes, e.equipamento from alunos a 
 inner join treinos t on a.id = t.id_aluno
 inner join itens_treino it on t.id = it.id_treino 
 inner join exercicios e on it.id_exercicio = e.id;
 
+-- exemplo sobre resumo planos
+create table resumo_planos as 
+select p.nome, count (a.id) as total_alunos
+from planos p
+left join alunos a on p.id = a.id_plano
+group by p.nome;
+
+-- criação dinamica
+insert into planos (nome, valor_mensal, duracao_meses)
+select 'Planos VIP Gold', max(valor_mensal) * 1.5, 12
+from planos;
+
+--update com subqueries
+update alunos set peso = peso - 1
+where id_plano = (select id_plano from planos
+where nome = 'Plano Anual Black');
+-- delete com subqueries
+delete from treinos
+where id_instrutor = (select id from instrutores where nome = 'Marcos Iron');
+
+
 select nome, peso from alunos
 where peso > (select AVG(peso) from alunos);
 
 select * from alunos;
+
+-- Tarefa1: Auditoria
+create table auditoria_precos as select p.nome, max(valor_mensal) * 12 
+from planos.p order by valor_mensal asc;
+
+-- Tarefa2: instrutores
+select * from instrutor order by id_instrutor asc;
+-- aqui removendo o instrutor daquela categoria treinos
+delete from treinos where id_instrutor = (select id from id_instrutor where id = 1);
+-- e aqui atualizando e buscando o instrutor mais recente.
+update treinos set id_instrutor = (select * from instrutores order by id_instrutor desc);
+-- fazer limpeza (descubra na lourdina)
+select * from id_plano;
