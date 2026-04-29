@@ -236,3 +236,11 @@ where peso > (select AVG(peso) from alunos);
 
 select * from alunos;
 
+-- Tarefa1: Auditoria
+create table auditoria_precos as select p.nome, max(valor_mensal) * 12 
+from planos.p order by valor_mensal asc;
+
+-- Tarefa2: instrutores
+select * from instrutor order by id_instrutor asc;
+
+delete from treinos where id_instrutor = (select id from id_instrutor where id = 1);
