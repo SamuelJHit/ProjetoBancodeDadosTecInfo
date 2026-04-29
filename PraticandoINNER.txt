@@ -200,3 +200,31 @@ select a.nome, e.nome_exercicios, it.repeticoes, e.equipamento from alunos a
 inner join treinos t on a.id = t.id_aluno
 inner join itens_treino it on t.id = it.id_treino 
 inner join exercicios e on it.id_exercicio = e.id;
+
+select objetivo,
+	(select nome from instrutores i where id = t.id_instrutor) as nome_professor
+from treinos t;
+
+select nome_exercicios from exercicios
+where id not in(select id_exercicios from itens_treino);
+
+select nome, especialidade from instrutores i where exists (select 1 from treinos T where t.id_instrutor = i.id);
+
+select nome from planos i where existis (select 1 from id_plano a where t.id_instrutor = i.id);
+
+select * from planos;
+
+create table backup_alunos as
+select * from alunos
+where CPF is not null;
+
+-- create table resumo_planos as select * from alunos where id_plano is not null; 
+
+create table resumo_planos as p.nome from planos where exists (select * from alunos);
+
+create table resumo_planos as select p.nome count(a.id) as total_alunos from planos p
+left join alunos a on p.id = a.id_plano 
+group by p.nome;
+
+select * from resumo_planos;
+
