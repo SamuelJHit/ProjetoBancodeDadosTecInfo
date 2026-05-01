@@ -278,4 +278,14 @@ end
 
 select peso, altura, fn_status_imc(peso, altura) from alunos;
 
+create function fn_perfil_plano (valor_mensal)
+returns decimal (30)
+deterministic
+begin
+	declare valor_mensal
+	declare categoria varchar(30)
+	
+	if valor_mensal < 100 then set categoria = 'Economico';
+	elseif valor_mensal <= 100 and valor_mensal < 200 then set categoria = 'Padrão'
+end
 
