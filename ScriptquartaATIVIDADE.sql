@@ -250,4 +250,32 @@ delete from instrutores where id = 1;
 -- Tarefa3: limpeza
 select id from planos where valor_mensal < 50 ;
 
-delete from alunos where id_plano in (select id from planos where valor_mensal < 50);
+delete from alunos where id_plano in (select id_plano from planos where valor_mensal < 50);
+
+
+select lower (nome) from alunos: 
+select * from alunos;
+
+select substring(data_nascimento, 1, 4) from alunos;
+
+select nome, ifnull (email, 'Sem Email') from alunos;
+
+create function fn_status_imc(peso decimal(5,2), altura decimal(5,2))
+returns varchar (10) 
+deterministic 
+begin
+	
+	declare imc decimal(5,2);
+	declare classificacao varchar(10);
+	set imc = peso / (altura * altura);
+	
+	if imc < 18.5 then set classificacao = 'Abaixo';
+	elseif imc <= 24.9 then set classificacao = 'Medio';
+	else set classificacao = 'Sobrepeso';
+	end if;  
+	return classificacao; 
+end
+
+select peso, altura, fn_status_imc(peso, altura) from alunos;
+
+
