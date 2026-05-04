@@ -228,3 +228,18 @@ group by p.nome;
 
 select * from resumo_planos;
 
+//
+A sintaxe básica para criar uma trigger no MySQL utiliza CREATE TRIGGER, definindo momento (BEFORE/AFTER), evento (INSERT/UPDATE/DELETE) e a ação FOR EACH ROW. Triggers automatizam ações, como auditoria ou integridade, disparando antes ou depois de manipulações DML.Sintaxe Básica:sqlDELIMITER $$
+CREATE TRIGGER nome_do_trigger
+{BEFORE | AFTER} {INSERT | UPDATE | DELETE}
+ON nome_da_tabela FOR EACH ROW
+BEGIN
+    -- Corpo do gatilho: comandos SQL aqui
+    -- Use OLD.coluna para valores antigos (UPDATE/DELETE)
+    -- Use NEW.coluna para valores novos (INSERT/UPDATE)
+END$$
+DELIMITER ;
+Detalhes Principais:
+Delimitador: É essencial alterar o delimitador (ex: DELIMITER $$) para que o MySQL não execute a trigger prematuramente ao encontrar o primeiro ;.
+Momento (Timing): BEFORE (antes) ou AFTER (depois) da operação.
+Evento: INSERT, UPDATE ou DELETE.FOR EACH ROW: Indica que a trigger será ativada para cada linha afetada.OLD e NEW: Palavras-chave para referenciar dados antes e depois da modificação
