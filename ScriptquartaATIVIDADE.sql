@@ -317,3 +317,7 @@ begin
 	values (old.id, old.valor_mensal, new.valor_mensal, now());
 end if;
 end
+
+select * from planos;
+
+update planos set valor_mensal = 180 where id = 1;
