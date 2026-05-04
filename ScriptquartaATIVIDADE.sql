@@ -293,3 +293,27 @@ end
 
 select nome, valor_mensal, fn_perfil_plano(valor_mensal) as categoria from planos;
 
+create trigger trg_padroniza_nome before insert on alunos for each row begin
+	set new.nome = upper(new.nome); 
+	end
+
+create trigger trg_padroniza_valor before update on planos for each row begin
+	if new.valor_mensal < 50 then set new.valor_mensal = 50;  
+	end if;
+end
+
+create table auditoria_precos (
+	id int auto_increment primary key,
+	id_plano int not null,
+	valor_antigo decimal (10,2),
+	valor_novo decimal (10,2),
+	data_auditoria timestamp default current_timestamp,
+	constraint fk_plano_auditoria foreign key (id_plano) references planos (id)
+);
+
+create trigger trg_auditoria_preco after update on planos for each row 
+begin
+	if old.valor_mensal <> new.valor_mensal then insert into auditoria_precos (id_plano, valor_antigo, valor_novo, data_auditoria) 
+	values (old.id, old.valor_mensal, new.valor_mensal, now());
+end if;
+end
