@@ -438,4 +438,14 @@ begin
 end
 
 -- 2 Bloqueio e Exclusão
+-- Tentando fazer...
+create trigger trg_backup_instrutor
+before delete on instrutores for each row
+begin 
+	if 
+	signal sqlstate '45000'
+	set massage_text = 'Erro: Não é permitido excluir o exercício especifico!';
+end
+
+-- 3 
 
