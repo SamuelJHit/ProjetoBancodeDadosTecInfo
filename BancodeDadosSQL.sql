@@ -405,9 +405,36 @@ select * from planos;
 
 update planos set valor_mensal = 180 where id = 1;
 
+create trigger trg_backup_alunos after delete on alunos for each row
+begin 
+	insert into backup_alunos (id_aluno, nome, cpf, data_exclusao) values(old.id_aluno, old.nome, old.cpf, now());
+end
+
+
 -- exercicio de trigger de Auditoria
 -- faça em casa!!
 create trigger trg_treino after insert on treinos for each row
 begin
 	if 
 end
+
+-- Desafios Práticos: Triggers e Automação
+
+create table auditoria_instrutor (
+	id_auditoriaIns int auto_increment primary key,
+	id_instrutor int not null,
+	log_instrutores varchar(30),
+	log_data_contratacao date,
+	constraint fk_instrutor_auditoria foreign key (id_instrutor) references instrutores (id)
+);
+
+create trigger trg_auditoria_instrutores 
+after update on instrutores for each row
+begin
+	if old.especialidade <> new.especialidade and old.nome <> new.nome then
+	insert into instrutores(id_auditoriaIns, id_instrutor, log_instrutores)
+	values (old.id, old.especialidade, new,especialidade, now());
+	end if;
+end
+
+
