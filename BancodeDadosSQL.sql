@@ -419,7 +419,7 @@ begin
 end
 
 -- Desafios Práticos: Triggers e Automação
-
+-- 1 Auditoria de Alterações 
 create table auditoria_instrutor (
 	id_auditoriaIns int auto_increment primary key,
 	id_instrutor int not null,
@@ -437,4 +437,5 @@ begin
 	end if;
 end
 
+-- 2 Bloqueio e Exclusão
 
