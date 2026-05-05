@@ -293,9 +293,75 @@ end
 
 select nome, valor_mensal, fn_perfil_plano(valor_mensal) as categoria from planos;
 
+create function fn_fc_alvo (idade INT) returns varchar (50) 
+deterministic 
+begin
+	declare fcm int;
+	declare min_zona decimal(5,2);
+	declare max_zona decimal (5,2);
+
+	set fcm = 220 - idade;
+	set min_zona = fcm * 0.60;
+	set max_zona = fcm * 0.70;
+	
+	return concat ('Min: ', min_zona, ' - Max: ', max_zona);
+end
+
+-- Cada questão são exemplos para você estudar melhor.
+create function fn_mascara_email (email varchar(100) returns varchar(100) 
+deterministic
+begin
+	declare pos int;
+
+	set pos = instr (email, '@');
+	
+	return concat (substring (email, 1, 1), '*****', substring(email, pos));
+end
+
+create function fn_eh_aniversariante (date data_nascimento) returns tinyint(1) 
+deterministic
+begin
+	if month(data_nasc) = month(curdate()) and day(data_nascimento) = day(curdate()) then
+		return 1;
+	else
+		return 0;
+	end if;
+end
+
+create function fn_calcular_preco_verao (valor_mensal) returns decimal (5,2) deterministic
+begin
+	if valor_mensal > 200 then
+		return valor_mensal * 0.90;
+
+	else valor <= 200 then
+		return valor_mensal * 0.95;
+	
+	end if;
+end
+
+create function fn_validar_formato_cpf (cpf varchar(20)) returns varchar(varchar(10)) deterministic
+begin
+	if length (cpf) = 11 then
+		return 'Válido';
+	else
+		return 'Inválido';
+	end if;
+end
+
+create function fn_senioridade_instrutor(data_contratacao DATE) returns varchar(20) deterministic
+begin
+	declare anos int;
+	set anos = timestampdiff (year, data_contratacao, curdate());
+
+	if anos < 1 then return 'Instrutor Júnior';
+	elseif anos <= 5 then return 'Instrutor Pleno';
+	else return 'Instrutor Sênior';
+	end if;
+end
+
 create trigger trg_padroniza_nome before insert on alunos for each row begin
 	set new.nome = upper(new.nome); 
-	end
+end
 
 create trigger trg_padroniza_valor before update on planos for each row begin
 	if new.valor_mensal < 50 then set new.valor_mensal = 50;  
