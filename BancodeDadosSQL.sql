@@ -321,3 +321,10 @@ end
 select * from planos;
 
 update planos set valor_mensal = 180 where id = 1;
+
+-- exercicio de trigger de Auditoria
+-- faça em casa!!
+create trigger trg_treino after insert on treinos for each row
+begin
+	if 
+end
