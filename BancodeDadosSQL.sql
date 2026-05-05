@@ -318,10 +318,10 @@ begin
 	return concat (substring (email, 1, 1), '*****', substring(email, pos));
 end
 
-create function fn_eh_aniversariante (date data_nascimento) returns tinyint(1) 
+create function fn_eh_aniversariante (data_nascimento date) returns tinyint(1) 
 deterministic
 begin
-	if month(data_nasc) = month(curdate()) and day(data_nascimento) = day(curdate()) then
+	if month(data_nascimento) = month(curdate()) and day(data_nascimento) = day(curdate()) then
 		return 1;
 	else
 		return 0;
@@ -339,7 +339,7 @@ begin
 	end if;
 end
 
-create function fn_validar_formato_cpf (cpf varchar(20)) returns varchar(varchar(10)) deterministic
+create function fn_validar_formato_cpf (cpf varchar(20)) returns varchar(10) deterministic
 begin
 	if length (cpf) = 11 then
 		return 'Válido';
@@ -358,6 +358,23 @@ begin
 	else return 'Instrutor Sênior';
 	end if;
 end
+
+create function fn_custo_beneficio (valor_mensal decimal(10,2),duracao_meses int) returns varchar(20) deterministic
+begin
+	if valor_mensal > 150 and duracao_meses < 6 then
+		return 'Alto Custo';
+	else 
+		return 'Ótimo Investimento';
+	end if;
+end
+
+create function fn_tempo_total (id_treino int) returns varchar(20) deterministic 
+begin
+	declare total_reps int;
+	select sum(repeticoes) into total_reps from itens_treino where id_treino = id_tempo_total;
+	return ifnull (total_reps / 20, 0);
+end
+
 
 create trigger trg_padroniza_nome before insert on alunos for each row begin
 	set new.nome = upper(new.nome); 
