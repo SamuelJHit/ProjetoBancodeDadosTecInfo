@@ -375,15 +375,23 @@ begin
 	return ifnull (total_reps / 20, 0);
 end
 
+DELIMITER $$
 
 create trigger trg_padroniza_nome before insert on alunos for each row begin
 	set new.nome = upper(new.nome); 
-end
+end $$
+
+DELIMITER ;
+
+
+DELIMITER $$
 
 create trigger trg_padroniza_valor before update on planos for each row begin
 	if new.valor_mensal < 50 then set new.valor_mensal = 50;  
 	end if;
-end
+end $$
+
+DELIMITER ;
 
 create table auditoria_precos (
 	id int auto_increment primary key,
@@ -394,30 +402,32 @@ create table auditoria_precos (
 	constraint fk_plano_auditoria foreign key (id_plano) references planos (id)
 );
 
+DELIMITER $$
+
 create trigger trg_auditoria_preco after update on planos for each row 
 begin
 	if old.valor_mensal <> new.valor_mensal then insert into auditoria_precos (id_plano, valor_antigo, valor_novo, data_auditoria) 
 	values (old.id, old.valor_mensal, new.valor_mensal, now());
 end if;
-end
+end $$
+
+DELIMITER ;
 
 select * from planos;
 
 update planos set valor_mensal = 180 where id = 1;
 
+DELIMITER $$
 create trigger trg_backup_alunos after delete on alunos for each row
 begin 
 	insert into backup_alunos (id_aluno, nome, cpf, data_exclusao) values(old.id_aluno, old.nome, old.cpf, now());
-end
+end$$
+
+DELIMITER ;
 
 
 -- exercicio de trigger de Auditoria
 -- faça em casa!!
-create trigger trg_treino after insert on treinos for each row
-begin
-	if 
-end
-
 
 use db_academia_fitflow;
 
@@ -432,6 +442,8 @@ create table auditoria_instrutor (
 	constraint fk_instrutor_auditoria foreign key (id_instrutor) references instrutores (id)
 );
 
+DELIMITER $$
+
 create trigger trg_auditoria_instrutores 
 after update on instrutores for each row
 begin
@@ -444,7 +456,8 @@ begin
 	insert into auditoria_instrutor (id_instrutor, log_instrutores, log_data_alteracao)
 	values (old.id, concat('Nome: ', old.nome, ' -> ', new.nome), curdate());
 	end if;
-end
+end $$
+DELIMITER ;
 
 update instrutores set especialidade = 'Zumba Teste' where id = 4;
 
@@ -452,28 +465,55 @@ select * from auditoria_instrutor;
 
 
 -- 2 Bloqueio e Exclusão
+
+DELIMITER $$
+
 create trigger trg_backup_instrutor
 before delete on exercicios for each row
 begin 
 	if old.nome_exercicio = 'Supino Reto' then 
 	signal sqlstate '45000'
-	set massage_text = 'Erro: Não é permitido excluir o exercício especifico!';
+	set MESSAGE_TEXT = 'Erro: Não é permitido excluir o exercício especifico!';
 	end if;
 end
 
--- 3 
+DELIMITER ;
+
+delete from exercicios where nome_exercicio = 'Supino Reto';
+
+-- 3 Sincronização de Dados
 create table estatica_alunos (
-	id int primary key,
+	id_ea int primary key,
 	total_alunos int
 ); 
 
+select * from estatica_alunos;
+
+DELIMITER $$
+
 create trigger trg_soma_alunos before insert on alunos for each row
 begin
-	update estatica_alunos set total_alunos + 1 where id = 1;
+	update estatica_alunos set total_alunos = total_alunos + 1 where id_ea = 1;
 end
 
-create trigger trg_delete_alunos after delete on alunos for each row
+DELIMITER ;
+
+DELIMITER $$
+
+create trigger trg_subtrai_alunos after delete on alunos for each row
 begin
-	update estatica_alunos set total_alunos - 1 where id = 1;
+	update estatica_alunos set total_alunos = total_alunos - 1 where id_ea = 1;
 end
+
+DELIMITER ;
+select * from planos;
+
+select * from estatica_alunos;
+
+insert into estatica_alunos values (2 , 0);
+
+delete from estatica_alunos where id_ea = 2;
+
+select * from estatica_alunos;
+
 
