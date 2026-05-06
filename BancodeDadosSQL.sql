@@ -418,34 +418,62 @@ begin
 	if 
 end
 
+
+use db_academia_fitflow;
+
 -- Desafios Práticos: Triggers e Automação
 -- 1 Auditoria de Alterações 
+
 create table auditoria_instrutor (
 	id_auditoriaIns int auto_increment primary key,
 	id_instrutor int not null,
-	log_instrutores varchar(30),
-	log_data_contratacao date,
+	log_instrutores varchar(90),
+	log_data_alteracao date,
 	constraint fk_instrutor_auditoria foreign key (id_instrutor) references instrutores (id)
 );
 
 create trigger trg_auditoria_instrutores 
 after update on instrutores for each row
 begin
-	if old.especialidade <> new.especialidade and old.nome <> new.nome then
-	insert into instrutores(id_auditoriaIns, id_instrutor, log_instrutores)
-	values (old.id, old.especialidade, new,especialidade, now());
+	if old.especialidade <> new.especialidade then
+	insert into auditoria_instrutor (id_instrutor, log_instrutores, log_data_alteracao) 
+	values (old.id, concat('Especialidade: ', old.especialidade,' -> ', new.especialidade), curdate());
+	end if;
+
+	if old.nome <> new.nome then
+	insert into auditoria_instrutor (id_instrutor, log_instrutores, log_data_alteracao)
+	values (old.id, concat('Nome: ', old.nome, ' -> ', new.nome), curdate());
 	end if;
 end
 
+update instrutores set especialidade = 'Zumba Teste' where id = 4;
+
+select * from auditoria_instrutor;
+
+
 -- 2 Bloqueio e Exclusão
--- Tentando fazer...
 create trigger trg_backup_instrutor
-before delete on instrutores for each row
+before delete on exercicios for each row
 begin 
-	if 
+	if old.nome_exercicio = 'Supino Reto' then 
 	signal sqlstate '45000'
 	set massage_text = 'Erro: Não é permitido excluir o exercício especifico!';
+	end if;
 end
 
 -- 3 
+create table estatica_alunos (
+	id int primary key,
+	total_alunos int
+); 
+
+create trigger trg_soma_alunos before insert on alunos for each row
+begin
+	update estatica_alunos set total_alunos + 1 where id = 1;
+end
+
+create trigger trg_delete_alunos after delete on alunos for each row
+begin
+	update estatica_alunos set total_alunos - 1 where id = 1;
+end
 
