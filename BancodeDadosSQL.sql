@@ -517,3 +517,9 @@ delete from estatica_alunos where id_ea = 2;
 select * from estatica_alunos;
 
 
+-- 4 Gerenciamento e SQL
+
+select * from alunos;
+
+SHOW TRIGGERS WHERE `Table` = 'alunos';
+
