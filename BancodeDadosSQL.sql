@@ -523,3 +523,58 @@ select * from alunos;
 
 SHOW TRIGGERS WHERE `Table` = 'alunos';
 
+
+-- Outro assunto:
+
+after table alunos add column whastapp varchar(20) after emai;
+modify column nome varchar(150) not null;
+
+alter table alunos change column cpf documento fiscal varchar(14)
+
+alter table alunos drop column whastapp;
+
+-- Laboratório Prático
+select * from alunos;
+
+-- after table alunos add column data_cadastro varchar(20) after data_nascimento;
+
+after table alunos add column data_cadastro TIMESTAMP default current_timestamp;
+
+-- alter table alunos drop column data_cadastro;
+
+select truncate (data_cadastro , 0) from alunos;
+
+truncate table data_cadastro ;
+
+alter table aditoria_preco rename to auditoria_planos;
+-- outro assunto
+create table pagamentos (
+	id int auto_increment primary key,
+	id_aluno int not null,
+	id_plano int not null,
+	valor_pago decimal(10,2),
+	data_vencimento date not null,
+	data_pagamento date,
+	status enum('Pendente', 'Pago', 'Atrasado', 'Cancelado') default 'Pendente',
+	metodo_pagamento varchar(50),
+	constraint fk_aluno_pagamento foreign key (id_aluno) references alunos (id) on delete cascade,
+	constraint fk_plano_pagamento foreign key(id_plano) references planos(id)
+);
+
+insert into pagamentos (id_aluno, id_plano, data_vencimento, status) values (1, 1 date_add(curdate(), interval 5 day ), 'Pendente' ),
+
+create procedure p_matricular_alunos(
+	in p_nome varchar(150),
+	in p_cpf varchar(14),
+	in p_id_plano int
+)
+begin 
+	-- inserir na tabela aluno
+	insert into aluno(nome, documento_fiscal, id_plano)
+	values (p_nome, p_documento_fiscal, p_id_plano);
+
+	insert into pagamentos (id_aluno, id_plano, data_vencimento, status) values (last_insert_id(),p_id_plano, date_add(curdate() interval 5 day ), 'Pendente');
+	
+	select 'Matricula e Pagamento criados com sucesso' as resultado;
+end
+
