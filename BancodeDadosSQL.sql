@@ -573,8 +573,11 @@ begin
 	insert into aluno(nome, documento_fiscal, id_plano)
 	values (p_nome, p_documento_fiscal, p_id_plano);
 
-	insert into pagamentos (id_aluno, id_plano, data_vencimento, status) values (last_insert_id(),p_id_plano, date_add(curdate() interval 5 day ), 'Pendente');
+	insert into pagamentos (id_aluno, id_plano, data_vencimento, status) 
+	values (last_insert_id(),p_id_plano, date_add(curdate() interval 5 day ), 'Pendente');
 	
 	select 'Matricula e Pagamento criados com sucesso' as resultado;
+	
+	call p_matricular_aluno('Aluno Novo', '209939994888', 1);
 end
 
