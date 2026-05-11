@@ -561,7 +561,10 @@ create table pagamentos (
 	constraint fk_plano_pagamento foreign key(id_plano) references planos(id)
 );
 
-insert into pagamentos (id_aluno, id_plano, data_vencimento, status) values (1, 1 date_add(curdate(), interval 5 day ), 'Pendente' ),
+insert into pagamentos (id_aluno, id_plano, data_vencimento, status) 
+values (1, 1, date_add(curdate(), interval 5 day), 'Pendente' ),
+(2, 2, date_sub(curdate(), interval 2 day ), 'Atrasado' ),
+(3, 3, curdate(), 'Pago');
 
 create procedure p_matricular_alunos(
 	in p_nome varchar(150),
@@ -570,14 +573,53 @@ create procedure p_matricular_alunos(
 )
 begin 
 	-- inserir na tabela aluno
-	insert into aluno(nome, documento_fiscal, id_plano)
-	values (p_nome, p_documento_fiscal, p_id_plano);
+	insert into aluno(nome, cpf, id_plano)
+	values (p_nome, p_cpf, p_id_plano);
 
 	insert into pagamentos (id_aluno, id_plano, data_vencimento, status) 
-	values (last_insert_id(),p_id_plano, date_add(curdate() interval 5 day ), 'Pendente');
+	values (LAST_INSERT_ID(),p_id_plano, date_add(curdate(), interval 5 day ), 'Pendente');
 	
 	select 'Matricula e Pagamento criados com sucesso' as resultado;
 	
 	call p_matricular_aluno('Aluno Novo', '209939994888', 1);
 end
 
+create table presencas (
+	id_presencas int auto_increment primary key,
+	id_alunoP int not null,
+	data_presencas date not null,
+	duracao_presenca int not null,
+	constraint fk_aluno_presenca foreign key (id_alunoP) references alunos(id) on delete cascade
+);
+
+create table perfil_aluno (
+	id_perfil int auto_increment primary key,
+	id_alunoPA int not null,
+	fitpoints int default,
+	constraint fk_perfil_aluno foreign key (id_alunoPA) references alunos (id) on delete cascade
+);
+
+insert into perfil_aluno (id_aluno) select id_aluno from alunos;
+
+Demiliter $$
+
+create procedure sp_presenca_registrado(
+	in p_id_aluno int,
+	in p_tempo int,
+)
+begin 
+	-- registrando o aluno
+	insert into presencas (id_aluno, data_presencas, duracao_presenca)
+	values (p_id_aluno, curdate() , p_tempo);
+
+	if p_tempo > 60 then
+	update perfil_aluno set fitpoints = fitpoints + 10 where id_aluno = p_id_aluno;
+	select 'Parabens! você ganhou 10 fitpoints!' as resultado;
+	else
+	select 'Presença Registrado' as resultado;
+	end if
+	
+	end $$
+	
+Demiliter ;
+	
