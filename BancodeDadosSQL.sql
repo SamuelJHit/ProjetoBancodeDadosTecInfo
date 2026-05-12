@@ -595,21 +595,23 @@ create table presencas (
 create table perfil_aluno (
 	id_perfil int auto_increment primary key,
 	id_alunoPA int not null,
-	fitpoints int default,
+	fitpoints int default 0,
 	constraint fk_perfil_aluno foreign key (id_alunoPA) references alunos (id) on delete cascade
 );
 
-insert into perfil_aluno (id_aluno) select id_aluno from alunos;
+insert into perfil_aluno (id_alunoPA) select id from alunos;
 
-Demiliter $$
+
+
+Delimiter $$
 
 create procedure sp_presenca_registrado(
 	in p_id_aluno int,
-	in p_tempo int,
+	in p_tempo int
 )
 begin 
 	-- registrando o aluno
-	insert into presencas (id_aluno, data_presencas, duracao_presenca)
+	insert into presencas (id_alunoP, data_presencas, duracao_presenca)
 	values (p_id_aluno, curdate() , p_tempo);
 
 	if p_tempo > 60 then
@@ -617,9 +619,9 @@ begin
 	select 'Parabens! você ganhou 10 fitpoints!' as resultado;
 	else
 	select 'Presença Registrado' as resultado;
-	end if
+	end if;
 	
-	end $$
+	end 
 	
-Demiliter ;
+Delimiter ;
 	
