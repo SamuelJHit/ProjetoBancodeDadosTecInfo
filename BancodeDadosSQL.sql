@@ -624,4 +624,53 @@ begin
 	end 
 	
 Delimiter ;
+
+	-- Assunto sobre out
+
+create procedure sp_obter_pontos(
+	in p_id_aluno int, out p_total_pontos int
+) begin
+	select fitponts into p_total_pontos
+	from perfil_aluno
+	where id_aluno = p_id_aluno;
+end
+
+call sp_obter_pontos(1, @meus_pontos);
+select @meus_pontos;
 	
+create table historico_pagamento(
+	id auto_increment primary key,
+	id_exercicio int not null,
+	id_aluno int not null,
+	data_treino date not null,
+	quantas_repeticoes int,
+	peso decimal (10,2),
+	constraint fk_historico_pagamento foreign key (id_aluno) references alunos (id)
+);
+
+
+
+create procedure aluno_atrasado(
+in p_id_aluno int, 
+in p_entrada int,
+out p_novo_saldo int,
+) begin
+	select atrasado into id_aluno
+	from pagamentos
+	where status = 'Atrasado'
+	
+	if status = 'Atrasado' then 
+	signal sqlstate '45000'
+	set MESSAGE_TEXT = 'Erro: impedimento';
+	from pagamentos order by ...
+end
+
+-- exemplo:
+create trigger trg_backup_instrutor
+before delete on exercicios for each row
+begin 
+	if old.nome_exercicio = 'Supino Reto' then 
+	signal sqlstate '45000'
+	set MESSAGE_TEXT = 'Erro: Não é permitido excluir o exercício especifico!';
+	end if;
+end
